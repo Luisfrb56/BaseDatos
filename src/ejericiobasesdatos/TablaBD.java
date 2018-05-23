@@ -7,34 +7,37 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 
 public class TablaBD extends javax.swing.JFrame {
-
+ DefaultTableModel modelo;
     Connection connect;
 
     public TablaBD() {
-        
-        
         initComponents();
-    this.recargar();
-            
+         
+       
          
     }
 
-    public void recargar(){
-                 DefaultTableModel modelo= (DefaultTableModel) jtAlumnos.getModel();
+    public void conectar(){
+                 
         try {
-            
+  
             connect = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adm\\Documents\\NetBeansProjects\\3Eval\\EjericioBasesDatos\\MiBase.db");
-            Statement s = connect.createStatement();
-            ResultSet rs = s.executeQuery("select * from Alumnos");
-            while (rs.next()) {
-            modelo.addRow(new Object[]{rs.getInt(1),rs.getString(2),rs.getInt(3)});
-               
-            System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getInt(3));
-            }
+    
         } catch (SQLException ex) {
             Logger.getLogger(TablaBD.class.getName()).log(Level.SEVERE, null, ex);
              
         } 
+         
+    }
+    public void desconectar(){
+        try{
+            connect.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(TablaBD.class.getName()).log(Level.SEVERE, null, ex);
+             
+        } 
+         
     }
     
     /**
@@ -57,6 +60,10 @@ public class TablaBD extends javax.swing.JFrame {
         jtNome = new javax.swing.JTextField();
         jtNota = new javax.swing.JTextField();
         jbCancelar = new javax.swing.JButton();
+        jtClave1 = new javax.swing.JTextField();
+        jtBuscar = new javax.swing.JButton();
+        jbModificar = new javax.swing.JButton();
+        jbConectar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,6 +116,32 @@ public class TablaBD extends javax.swing.JFrame {
             }
         });
 
+        jtClave1.setPreferredSize(new java.awt.Dimension(150, 25));
+
+        jtBuscar.setText("Buscar");
+        jtBuscar.setPreferredSize(new java.awt.Dimension(110, 25));
+        jtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtBuscarActionPerformed(evt);
+            }
+        });
+
+        jbModificar.setText("Modificar Alumno");
+        jbModificar.setPreferredSize(new java.awt.Dimension(110, 25));
+        jbModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbModificarActionPerformed(evt);
+            }
+        });
+
+        jbConectar.setText("Conectar");
+        jbConectar.setPreferredSize(new java.awt.Dimension(110, 25));
+        jbConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbConectarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,28 +149,44 @@ public class TablaBD extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(93, 93, 93)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jlClave)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jlClave2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jlClave1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(92, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(187, 187, 187))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jbAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jlClave)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jlClave2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jlClave1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(116, 116, 116)
+                                        .addComponent(jtClave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(35, 35, 35)
+                                        .addComponent(jbModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(47, 47, 47)
+                                        .addComponent(jbConectar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,11 +194,15 @@ public class TablaBD extends javax.swing.JFrame {
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlClave)
-                    .addComponent(jtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtClave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlClave1)
-                    .addComponent(jtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbConectar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlClave2)
@@ -168,18 +221,23 @@ public class TablaBD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAñadirActionPerformed
-       try {
+       
+        this.conectar();
+        try {
+            
             PreparedStatement st = connect.prepareStatement("insert into alumnos (clave, nombre, nota) values (?,?,?)");
             st.setInt(1, Integer.parseInt(jtClave.getText()));
             st.setString(2, jtNome.getText());
             st.setInt(3, Integer.parseInt(jtNota.getText()));
+           
             st.execute();
 
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-this.recargar();
-      
+       
+this.desconectar();
+
     }//GEN-LAST:event_jbAñadirActionPerformed
 
     private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
@@ -187,6 +245,7 @@ this.recargar();
     }//GEN-LAST:event_jbCancelarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+       this.conectar();
         try {
             PreparedStatement st = connect.prepareStatement("delete from Alumnos where clave='"+jtClave.getText()+"';");
             st.executeUpdate();
@@ -194,8 +253,58 @@ this.recargar();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        this.recargar();
+        this.desconectar();
+        
     }//GEN-LAST:event_jbEliminarActionPerformed
+
+    private void jtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtBuscarActionPerformed
+        this.conectar();
+        try {
+            
+   PreparedStatement st = connect.prepareStatement("select * from Alumnos WHERE nombre='"+jtBuscar.getText()+"' or clave='"+jtBuscar.getText()+"' or nota='"+jtBuscar.getText()+"';");
+    ResultSet rs = st.executeQuery();
+    
+    JOptionPane.showMessageDialog(null, "Clave: "+rs.getInt(1)+" Nombre: "+rs.getString(2)+" Nota: "+rs.getInt(3));
+            
+             
+        } catch (SQLException ex) {
+            System.out.println("Error en la busqueda");
+        }
+        this.desconectar();
+    }//GEN-LAST:event_jtBuscarActionPerformed
+
+    private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
+         this.conectar();
+        try {
+            PreparedStatement st=connect.prepareStatement("update Alumnos set Nombre = '"+jtNome.getText()+"' , Nota = '"+jtNota.getText()+"' WHERE clave = '"+jtClave.getText()+"'");
+            st.execute();
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        this.desconectar();
+        
+    }//GEN-LAST:event_jbModificarActionPerformed
+
+    private void jbConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConectarActionPerformed
+       this.conectar();
+  
+        try{
+                   modelo =(DefaultTableModel) jtAlumnos.getModel();
+          Statement s = connect.createStatement();
+            ResultSet rs = s.executeQuery("select * from Alumnos");
+            while (rs.next()) {
+            modelo.addRow(new Object[]{rs.getInt(1),rs.getString(2),rs.getInt(3)});
+        }
+        }catch (SQLException ex) {
+
+            Logger.getLogger(TablaBD.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        
+        this.desconectar();
+        
+    }//GEN-LAST:event_jbConectarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,12 +345,16 @@ this.recargar();
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbAñadir;
     private javax.swing.JButton jbCancelar;
+    private javax.swing.JButton jbConectar;
     private javax.swing.JButton jbEliminar;
+    private javax.swing.JButton jbModificar;
     private javax.swing.JLabel jlClave;
     private javax.swing.JLabel jlClave1;
     private javax.swing.JLabel jlClave2;
     private javax.swing.JTable jtAlumnos;
+    private javax.swing.JButton jtBuscar;
     private javax.swing.JTextField jtClave;
+    private javax.swing.JTextField jtClave1;
     private javax.swing.JTextField jtNome;
     private javax.swing.JTextField jtNota;
     // End of variables declaration//GEN-END:variables
