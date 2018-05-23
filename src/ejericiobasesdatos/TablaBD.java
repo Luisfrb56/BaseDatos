@@ -263,9 +263,10 @@ this.desconectar();
 
     Statement s = connect.createStatement();
             ResultSet rs = s.executeQuery("select * from Alumnos WHERE clave='"+jtBuscar.getText()+"'");
+            while(rs.next()){
     JOptionPane.showMessageDialog(null, "Clave: "+rs.getInt(1)+" Nombre: "+rs.getString(2)+" Nota: "+rs.getInt(3));
             
-             
+            }   
         } catch (SQLException ex) {
             System.out.println("Error en la busqueda");
         }
