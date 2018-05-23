@@ -1,6 +1,8 @@
 
 package ejericiobasesdatos;
 
+import javax.swing.SwingUtilities;
+
 
 public class EjericioBasesDatos {
 
@@ -8,5 +10,5 @@ public class EjericioBasesDatos {
 TablaBD base=new TablaBD();
 base.setVisible(true);
     }
-    
+
 }

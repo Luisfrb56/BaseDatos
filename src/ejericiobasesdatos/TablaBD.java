@@ -4,14 +4,23 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
 
 public class TablaBD extends javax.swing.JFrame {
 
     Connection connect;
 
     public TablaBD() {
+        
+        
         initComponents();
-         DefaultTableModel modelo= (DefaultTableModel) jtAlumnos.getModel();
+    this.recargar();
+            
+         
+    }
+
+    public void recargar(){
+                 DefaultTableModel modelo= (DefaultTableModel) jtAlumnos.getModel();
         try {
             
             connect = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adm\\Documents\\NetBeansProjects\\3Eval\\EjericioBasesDatos\\MiBase.db");
@@ -26,9 +35,8 @@ public class TablaBD extends javax.swing.JFrame {
             Logger.getLogger(TablaBD.class.getName()).log(Level.SEVERE, null, ex);
              
         } 
-         modelo.addRow(new Object[]{});
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,8 +48,15 @@ public class TablaBD extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jtAlumnos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jbEliminar = new javax.swing.JButton();
+        jbAñadir = new javax.swing.JButton();
+        jlClave = new javax.swing.JLabel();
+        jlClave1 = new javax.swing.JLabel();
+        jlClave2 = new javax.swing.JLabel();
+        jtClave = new javax.swing.JTextField();
+        jtNome = new javax.swing.JTextField();
+        jtNota = new javax.swing.JTextField();
+        jbCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,12 +70,42 @@ public class TablaBD extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jtAlumnos);
 
-        jButton1.setText("Eliminar Alumno");
-
-        jButton2.setText("Añadir Alumno");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jbEliminar.setText("Eliminar Alumno");
+        jbEliminar.setPreferredSize(new java.awt.Dimension(110, 25));
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jbEliminarActionPerformed(evt);
+            }
+        });
+
+        jbAñadir.setText("Añadir Alumno");
+        jbAñadir.setPreferredSize(new java.awt.Dimension(110, 25));
+        jbAñadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAñadirActionPerformed(evt);
+            }
+        });
+
+        jlClave.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jlClave.setText("Clave");
+
+        jlClave1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jlClave1.setText("Nome");
+
+        jlClave2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jlClave2.setText("Nota");
+
+        jtClave.setPreferredSize(new java.awt.Dimension(75, 25));
+
+        jtNome.setPreferredSize(new java.awt.Dimension(75, 25));
+
+        jtNota.setPreferredSize(new java.awt.Dimension(75, 25));
+
+        jbCancelar.setText("Cancelar");
+        jbCancelar.setPreferredSize(new java.awt.Dimension(110, 25));
+        jbCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbCancelarActionPerformed(evt);
             }
         });
 
@@ -69,36 +114,88 @@ public class TablaBD extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
+                .addGap(93, 93, 93)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlClave)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlClave2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlClave1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(jButton2)
-                        .addGap(147, 147, 147)
-                        .addComponent(jButton1)))
-                .addContainerGap(110, Short.MAX_VALUE))
+                        .addComponent(jbAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addGap(121, 121, 121))
+                    .addComponent(jlClave)
+                    .addComponent(jtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlClave1)
+                    .addComponent(jtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlClave2)
+                    .addComponent(jtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jbAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAñadirActionPerformed
+       try {
+            PreparedStatement st = connect.prepareStatement("insert into alumnos (clave, nombre, nota) values (?,?,?)");
+            st.setInt(1, Integer.parseInt(jtClave.getText()));
+            st.setString(2, jtNome.getText());
+            st.setInt(3, Integer.parseInt(jtNota.getText()));
+            st.execute();
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+this.recargar();
       
-      
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jbAñadirActionPerformed
+
+    private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jbCancelarActionPerformed
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+        try {
+            PreparedStatement st = connect.prepareStatement("delete from Alumnos where clave='"+jtClave.getText()+"';");
+            st.executeUpdate();
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        this.recargar();
+    }//GEN-LAST:event_jbEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -136,9 +233,16 @@ public class TablaBD extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbAñadir;
+    private javax.swing.JButton jbCancelar;
+    private javax.swing.JButton jbEliminar;
+    private javax.swing.JLabel jlClave;
+    private javax.swing.JLabel jlClave1;
+    private javax.swing.JLabel jlClave2;
     private javax.swing.JTable jtAlumnos;
+    private javax.swing.JTextField jtClave;
+    private javax.swing.JTextField jtNome;
+    private javax.swing.JTextField jtNota;
     // End of variables declaration//GEN-END:variables
 }
