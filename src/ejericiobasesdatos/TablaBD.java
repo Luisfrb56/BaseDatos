@@ -260,10 +260,9 @@ this.desconectar();
     private void jtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtBuscarActionPerformed
         this.conectar();
         try {
-            
-   PreparedStatement st = connect.prepareStatement("select * from Alumnos WHERE nombre='"+jtBuscar.getText()+"' or clave='"+jtBuscar.getText()+"' or nota='"+jtBuscar.getText()+"';");
-    ResultSet rs = st.executeQuery();
-    
+
+    Statement s = connect.createStatement();
+            ResultSet rs = s.executeQuery("select * from Alumnos WHERE clave='"+jtBuscar.getText()+"'");
     JOptionPane.showMessageDialog(null, "Clave: "+rs.getInt(1)+" Nombre: "+rs.getString(2)+" Nota: "+rs.getInt(3));
             
              
