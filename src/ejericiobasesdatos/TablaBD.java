@@ -7,39 +7,39 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 
 public class TablaBD extends javax.swing.JFrame {
- DefaultTableModel modelo;
-    Connection connect;
 
+    DefaultTableModel modelo = new DefaultTableModel();
+    Connection connect;
+ResultSet rs ;
+Statement s;
     public TablaBD() {
         initComponents();
-         
-       
-         
+ modelo = (DefaultTableModel) jtAlumnos.getModel();
     }
 
-    public void conectar(){
-                 
+    public void conectar() {
+
         try {
-  
+
             connect = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adm\\Documents\\NetBeansProjects\\3Eval\\EjericioBasesDatos\\MiBase.db");
-    
+
         } catch (SQLException ex) {
             Logger.getLogger(TablaBD.class.getName()).log(Level.SEVERE, null, ex);
-             
-        } 
-         
+
+        }
+
     }
-    public void desconectar(){
-        try{
+
+    public void desconectar() {
+        try {
             connect.close();
-        } 
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(TablaBD.class.getName()).log(Level.SEVERE, null, ex);
-             
-        } 
-         
+
+        }
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,7 +60,7 @@ public class TablaBD extends javax.swing.JFrame {
         jtNome = new javax.swing.JTextField();
         jtNota = new javax.swing.JTextField();
         jbCancelar = new javax.swing.JButton();
-        jtClave1 = new javax.swing.JTextField();
+        jttBuscar = new javax.swing.JTextField();
         jtBuscar = new javax.swing.JButton();
         jbModificar = new javax.swing.JButton();
         jbConectar = new javax.swing.JButton();
@@ -116,7 +116,7 @@ public class TablaBD extends javax.swing.JFrame {
             }
         });
 
-        jtClave1.setPreferredSize(new java.awt.Dimension(150, 25));
+        jttBuscar.setPreferredSize(new java.awt.Dimension(150, 25));
 
         jtBuscar.setText("Buscar");
         jtBuscar.setPreferredSize(new java.awt.Dimension(110, 25));
@@ -134,7 +134,7 @@ public class TablaBD extends javax.swing.JFrame {
             }
         });
 
-        jbConectar.setText("Conectar");
+        jbConectar.setText("Mostrar");
         jbConectar.setPreferredSize(new java.awt.Dimension(110, 25));
         jbConectar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,12 +156,6 @@ public class TablaBD extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jbAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)
-                                .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
-                                .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jlClave)
@@ -178,14 +172,21 @@ public class TablaBD extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(116, 116, 116)
-                                        .addComponent(jtClave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jttBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(35, 35, 35)
-                                        .addComponent(jbModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(47, 47, 47)
-                                        .addComponent(jbConectar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGap(217, 217, 217)
+                                        .addComponent(jbConectar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jbAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jbModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(39, 39, 39)
+                                        .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -195,15 +196,15 @@ public class TablaBD extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlClave)
                     .addComponent(jtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtClave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jttBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlClave1)
                     .addComponent(jtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbConectar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jbConectar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlClave2)
                     .addComponent(jtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -221,22 +222,22 @@ public class TablaBD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAñadirActionPerformed
-       
+
         this.conectar();
         try {
-            
+
             PreparedStatement st = connect.prepareStatement("insert into alumnos (clave, nombre, nota) values (?,?,?)");
             st.setInt(1, Integer.parseInt(jtClave.getText()));
             st.setString(2, jtNome.getText());
             st.setInt(3, Integer.parseInt(jtNota.getText()));
-           
+
             st.execute();
 
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-       
-this.desconectar();
+
+        this.desconectar();
 
     }//GEN-LAST:event_jbAñadirActionPerformed
 
@@ -245,28 +246,31 @@ this.desconectar();
     }//GEN-LAST:event_jbCancelarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-       this.conectar();
+        this.conectar();
         try {
-            PreparedStatement st = connect.prepareStatement("delete from Alumnos where clave='"+jtClave.getText()+"';");
+            PreparedStatement st = connect.prepareStatement("delete from Alumnos where clave='" + jtClave.getText() + "';");
             st.executeUpdate();
-            
+
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
         this.desconectar();
-        
+
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtBuscarActionPerformed
         this.conectar();
+
         try {
 
-    Statement s = connect.createStatement();
-            ResultSet rs = s.executeQuery("select * from Alumnos WHERE clave='"+jtBuscar.getText()+"'");
-            while(rs.next()){
-    JOptionPane.showMessageDialog(null, "Clave: "+rs.getInt(1)+" Nombre: "+rs.getString(2)+" Nota: "+rs.getInt(3));
+             s = connect.createStatement();
+            rs = s.executeQuery("select * from Alumnos where clave like'" + jttBuscar.getText() + "'");
+ 
             
-            }   
+            while (rs.next()) {
+                JOptionPane.showMessageDialog(null, "Clave: " + rs.getInt(1) + " Nombre: " + rs.getString(2) + " Nota: " + rs.getInt(3));
+
+            }
         } catch (SQLException ex) {
             System.out.println("Error en la busqueda");
         }
@@ -274,36 +278,42 @@ this.desconectar();
     }//GEN-LAST:event_jtBuscarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-         this.conectar();
+        this.conectar();
         try {
-            PreparedStatement st=connect.prepareStatement("update Alumnos set Nombre = '"+jtNome.getText()+"' , Nota = '"+jtNota.getText()+"' WHERE clave = '"+jtClave.getText()+"'");
+            PreparedStatement st = connect.prepareStatement("update Alumnos set Nombre = '" + jtNome.getText() + "' , Nota = '" + jtNota.getText() + "' WHERE clave = '" + jtClave.getText() + "'");
             st.execute();
-            
+
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
         this.desconectar();
-        
+
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConectarActionPerformed
-       this.conectar();
-  
-        try{
-                   modelo =(DefaultTableModel) jtAlumnos.getModel();
-          Statement s = connect.createStatement();
-            ResultSet rs = s.executeQuery("select * from Alumnos");
+        this.conectar();
+        modelo.setColumnCount(0);
+        modelo.setRowCount(0);
+        try {
+            
+             s = connect.createStatement();
+            rs = s.executeQuery("select * from Alumnos");
+            
+            modelo.addColumn("Clave");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Nota");
+            
             while (rs.next()) {
-            modelo.addRow(new Object[]{rs.getInt(1),rs.getString(2),rs.getInt(3)});
-        }
-        }catch (SQLException ex) {
+                modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getInt(3)});
+            }
+        } catch (SQLException ex) {
 
             Logger.getLogger(TablaBD.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-        
+
         this.desconectar();
-        
+
     }//GEN-LAST:event_jbConectarActionPerformed
 
     /**
@@ -354,8 +364,8 @@ this.desconectar();
     private javax.swing.JTable jtAlumnos;
     private javax.swing.JButton jtBuscar;
     private javax.swing.JTextField jtClave;
-    private javax.swing.JTextField jtClave1;
     private javax.swing.JTextField jtNome;
     private javax.swing.JTextField jtNota;
+    private javax.swing.JTextField jttBuscar;
     // End of variables declaration//GEN-END:variables
 }
